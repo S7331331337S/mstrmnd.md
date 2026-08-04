@@ -71,6 +71,32 @@ Agents and operators should treat this repository as authoritative context for:
 - security, evaluation, and observability;
 - internal planning, research, and roadmap decisions.
 
+## Access from `mstrmnd-core`
+
+Keep this repository private and grant `mstrmnd-core` read-only access rather than making the repository public or moving it into the application repository.
+
+Preferred approach:
+
+1. provision a dedicated service identity for `mstrmnd-core`;
+2. grant read-only access to this repository only;
+3. fetch versioned files or repository snapshots over the GitHub API or authenticated git;
+4. pin the consumed revision so runtime behavior is tied to a known knowledge version;
+5. rotate and revoke credentials independently of application deploys.
+
+Access guidance:
+
+- use least-privilege credentials scoped to repository contents read access;
+- prefer a GitHub App for long-term production access;
+- use a fine-grained read-only token only as a fast bootstrap path;
+- avoid broad personal access tokens and shared operator credentials;
+- do not expose credentials in prompts, logs, generated content, or client-visible traces.
+
+Repository boundary guidance:
+
+- keep `mstrmnd.md` separate when it is the canonical cross-agent source of truth;
+- move material into `mstrmnd-core` only when it becomes application-specific implementation detail rather than shared doctrine;
+- do not require public access just to make the knowledge consumable by agents or runtimes.
+
 ## Core Operating Principle
 
 MSTRMND does not add isolated AI tools for their own sake. It creates governed, interoperable systems that align business intent with execution and improve through measurable feedback.
